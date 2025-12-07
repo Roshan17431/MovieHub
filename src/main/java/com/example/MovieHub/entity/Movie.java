@@ -1,13 +1,20 @@
 package com.example.MovieHub.entity;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table(name="movies")
+@Table(name = "movies")
 public class Movie {
 
     @Id
@@ -15,80 +22,78 @@ public class Movie {
     private Long id;
 
     @NotBlank
-    @Size(max = 150)
+    @Column(nullable = false)
     private String title;
 
     @NotBlank
-    @Size(max = 100)
+    @Column(nullable = false)
     private String genre;
 
     @NotNull
-    @DecimalMin("0.0")
-    @Digits(integer = 3, fraction = 1)
+    @DecimalMin(value = "0.0")
+    @DecimalMax(value = "10.0")
+    @Column(nullable = false, precision = 3, scale = 1)
     private BigDecimal rating;
 
     @NotNull
-    @PastOrPresent
+    @Column(nullable = false)
     private LocalDate releaseDate;
 
-    @NotBlank
-    @Size(max = 500)
     private String posterUrl;
 
-    @Size(max = 2000)
-    @Column(length = 2000)
+    @Column(length = 4000)
     private String description;
 
     public Long getId() {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getGenre() {
-        return genre;
-    }
-
-    public BigDecimal getRating() {
-        return rating;
-    }
-
-    public LocalDate getReleaseDate() {
-        return releaseDate;
-    }
-
-    public String getPosterUrl() {
-        return posterUrl;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
+    public String getGenre() {
+        return genre;
+    }
+
     public void setGenre(String genre) {
         this.genre = genre;
+    }
+
+    public BigDecimal getRating() {
+        return rating;
     }
 
     public void setRating(BigDecimal rating) {
         this.rating = rating;
     }
 
+    public LocalDate getReleaseDate() {
+        return releaseDate;
+    }
+
     public void setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
     }
 
+    public String getPosterUrl() {
+        return posterUrl;
+    }
+
     public void setPosterUrl(String posterUrl) {
         this.posterUrl = posterUrl;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setDescription(String description) {
