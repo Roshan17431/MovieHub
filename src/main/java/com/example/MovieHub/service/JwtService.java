@@ -22,7 +22,7 @@ public class JwtService {
     private String jwtSecret;
 
     @Value("${app.security.jwt-expiration-ms:86400000}")
-    private long jwtExpirationInMs;
+    private long jwtExpirationMs;
 
     public String generateToken(User user) {
         return Jwts.builder()
