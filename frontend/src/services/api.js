@@ -29,7 +29,8 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       // Token expired or invalid
       localStorage.removeItem('token');
-      window.location.href = '/login';
+      // Trigger navigation event for React Router to handle
+      window.dispatchEvent(new CustomEvent('unauthorized'));
     }
     return Promise.reject(error);
   }
