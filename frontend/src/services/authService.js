@@ -54,7 +54,7 @@ export const authService = {
         email: decoded.sub,
         exp: decoded.exp,
       };
-    } catch (error) {
+    } catch {
       return null;
     }
   },
@@ -66,14 +66,10 @@ export const authService = {
     
     try {
       const decoded = jwtDecode(token);
-      // The backend uses Spring Security which stores roles in authorities
-      // Check if there's a role claim or authorities claim
-      const authorities = decoded.authorities || decoded.roles || [];
-      return authorities.some(auth => 
-        auth === 'ROLE_ADMIN' || 
-        auth.authority === 'ROLE_ADMIN'
-      );
-    } catch (error) {
+      // The backend stores roles in the 'roles' claim as an array
+      const roles = decoded.roles || [];
+      return roles.includes('ROLE_ADMIN');
+    } catch {
       return false;
     }
   },
