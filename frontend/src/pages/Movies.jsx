@@ -16,7 +16,7 @@ function Movies() {
   const [minRating, setMinRating] = useState('');
   const [maxRating, setMaxRating] = useState('');
 
-  const { data, isLoading, error, refetch } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['movies', page, size, sortBy, direction, title, genre, minRating, maxRating],
     queryFn: () => movieService.getMovies({
       page,
@@ -33,7 +33,6 @@ function Movies() {
   const handleSearch = (e) => {
     e.preventDefault();
     setPage(0);
-    refetch();
   };
 
   const handleClearFilters = () => {
@@ -135,7 +134,6 @@ function Movies() {
       {error && (
         <ErrorMessage 
           message={typeof error === 'string' ? error : 'Failed to load movies'} 
-          onRetry={refetch}
         />
       )}
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { movieService } from '../services/movieService';
@@ -20,7 +20,7 @@ function AdminMovieForm() {
   const [description, setDescription] = useState('');
   const [posterFile, setPosterFile] = useState(null);
   const [error, setError] = useState('');
-  const [initialized, setInitialized] = useState(false);
+  const isInitialized = useRef(false);
 
   // Fetch movie data if editing
   const { data: movie, isLoading } = useQuery({
@@ -29,16 +29,19 @@ function AdminMovieForm() {
     enabled: isEditMode,
   });
 
-  // Initialize form with movie data only once
-  if (movie && isEditMode && !initialized) {
-    setTitle(movie.title);
-    setGenre(movie.genre);
-    setRating(movie.rating);
-    setReleaseDate(movie.releaseDate);
-    setPosterUrl(movie.posterUrl || '');
-    setDescription(movie.description || '');
-    setInitialized(true);
-  }
+  // Initialize form with movie data when it loads (only once)
+  useEffect(() => {
+    if (movie && isEditMode && !isInitialized.current) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setTitle(movie.title);
+      setGenre(movie.genre);
+      setRating(movie.rating);
+      setReleaseDate(movie.releaseDate);
+      setPosterUrl(movie.posterUrl || '');
+      setDescription(movie.description || '');
+      isInitialized.current = true;
+    }
+  }, [movie, isEditMode]);
 
   // Create/Update mutation
   const saveMutation = useMutation({
