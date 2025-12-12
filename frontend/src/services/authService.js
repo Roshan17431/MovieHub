@@ -1,4 +1,5 @@
 import api from './api';
+import { jwtDecode } from 'jwt-decode';
 
 export const authService = {
   // Register a new user
@@ -40,5 +41,40 @@ export const authService = {
   // Get current token
   getToken: () => {
     return localStorage.getItem('token');
+  },
+
+  // Decode JWT and get user info
+  getUserInfo: () => {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+    
+    try {
+      const decoded = jwtDecode(token);
+      return {
+        email: decoded.sub,
+        exp: decoded.exp,
+      };
+    } catch (error) {
+      return null;
+    }
+  },
+
+  // Check if user has admin role
+  isAdmin: () => {
+    const token = localStorage.getItem('token');
+    if (!token) return false;
+    
+    try {
+      const decoded = jwtDecode(token);
+      // The backend uses Spring Security which stores roles in authorities
+      // Check if there's a role claim or authorities claim
+      const authorities = decoded.authorities || decoded.roles || [];
+      return authorities.some(auth => 
+        auth === 'ROLE_ADMIN' || 
+        auth.authority === 'ROLE_ADMIN'
+      );
+    } catch (error) {
+      return false;
+    }
   },
 };
