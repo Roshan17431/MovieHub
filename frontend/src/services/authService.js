@@ -51,6 +51,7 @@ export const authService = {
     try {
       const decoded = jwtDecode(token);
       return {
+        userId: decoded.userId,
         email: decoded.sub,
         exp: decoded.exp,
       };

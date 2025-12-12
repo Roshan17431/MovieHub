@@ -20,21 +20,25 @@ function AdminMovieForm() {
   const [description, setDescription] = useState('');
   const [posterFile, setPosterFile] = useState(null);
   const [error, setError] = useState('');
+  const [initialized, setInitialized] = useState(false);
 
   // Fetch movie data if editing
-  const { isLoading } = useQuery({
+  const { data: movie, isLoading } = useQuery({
     queryKey: ['movie', id],
     queryFn: () => movieService.getMovieById(id),
     enabled: isEditMode,
-    onSuccess: (data) => {
-      setTitle(data.title);
-      setGenre(data.genre);
-      setRating(data.rating);
-      setReleaseDate(data.releaseDate);
-      setPosterUrl(data.posterUrl || '');
-      setDescription(data.description || '');
-    },
   });
+
+  // Initialize form with movie data only once
+  if (movie && isEditMode && !initialized) {
+    setTitle(movie.title);
+    setGenre(movie.genre);
+    setRating(movie.rating);
+    setReleaseDate(movie.releaseDate);
+    setPosterUrl(movie.posterUrl || '');
+    setDescription(movie.description || '');
+    setInitialized(true);
+  }
 
   // Create/Update mutation
   const saveMutation = useMutation({
