@@ -1,0 +1,20 @@
+/target
+
+# IntelliJ/IDEA and VS Code
+/.idea
+*.iml
+/.vscode
+
+# Git and CI
+.git
+.gitignore
+
+# OS files
+.DS_Store
+
+# Frontend artifacts
+/frontend/node_modules
+/frontend/dist
+/frontend/build
+/frontend/.vite
+/frontend/.next
