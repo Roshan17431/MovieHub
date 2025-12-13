@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:4040',
+        target: 'https://moviehub-1-qtjc.onrender.com',
         changeOrigin: true,
       },
     },

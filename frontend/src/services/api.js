@@ -1,8 +1,10 @@
 import axios from 'axios';
 
 // Create axios instance with base URL
+const VITE_API_BASE_URL = 'https://moviehub-1-qtjc.onrender.com';
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
+  baseURL: VITE_API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
